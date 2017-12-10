@@ -90,37 +90,84 @@ module  ball ( input         Clk,                // 50 MHz clock
 		  attack_in = 10'd0;
 
 
-		 unique case(keycode[7:0])
+	    unique case(keycode[15:0])
 
-				8'h1A: //w (up)
+				16'h001A: //w (up)
 					begin
 						Ball_X_Motion_in=0;
 						Ball_Y_Motion_in=(~(Ball_Y_Step)+1'b1);
 					end
-				8'h07: //d(right)
+				16'h0007: //d(right)
 					begin
 						Ball_Y_Motion_in=0;
 						Ball_X_Motion_in=Ball_X_Step;
-						left_in = 0;
+					
 
 					end
-				8'h16: //s(down)
+				16'h0016: //s(down)
 					begin
 						Ball_X_Motion_in=0;
 						Ball_Y_Motion_in=Ball_Y_Step;
 					end
-				8'h04: //a(left)
+				16'h0004: //a(left)
 					begin
 						Ball_X_Motion_in=(~(Ball_X_Step)+1'b1);
 						Ball_Y_Motion_in=0;
-						left_in = 1;
+						
 					end
-				8'h08: //e(attack)
+				16'h0008: //e(attack)
 					begin
 						Ball_X_Motion_in = 0;
 						Ball_Y_Motion_in = 0;
 						attack_in = 1;
 					end
+		    
+		   		 16'h071A: //w&d (up&right)
+					begin
+						Ball_X_Motion_in=Ball_X_Step;
+						Ball_Y_Motion_in=(~(Ball_Y_Step)+1'b1);
+					end
+				16'h1A07: //w&d (up&right)
+					begin
+						Ball_Y_Motion_in=0;
+						Ball_X_Motion_in=Ball_X_Step;
+					end
+		    
+		    		16'h041A: //w&a (up& left)
+			    		begin
+						Ball_Y_Motion_in=(~(Ball_Y_Step)+1'b1);
+						Ball_X_Motion_in=(~(Ball_X_Step)+1'b1);
+					end
+		    		16'h1A04: //w&a (up& left)
+			    		begin
+						Ball_Y_Motion_in=(~(Ball_Y_Step)+1'b1);
+						Ball_X_Motion_in=(~(Ball_X_Step)+1'b1);
+					end
+		    		16'h0716: //s&d(down&right)
+					begin
+						Ball_X_Motion_in=Ball_X_Step;
+						Ball_Y_Motion_in=Ball_Y_Step;
+					end
+		    
+		    		16'h1607: //s&d(down&right)
+					begin
+						Ball_X_Motion_in=Ball_X_Step;
+						Ball_Y_Motion_in=Ball_Y_Step;
+					end
+		    
+		    		16'h0416: //s&d(down&left)
+					begin
+						Ball_X_Motion_in=(~(Ball_X_Step)+1'b1);
+						Ball_Y_Motion_in=Ball_Y_Step;
+					end
+		    
+			     	16'h1604: //s&d(down&left)
+					begin
+						Ball_X_Motion_in=(~(Ball_X_Step)+1'b1);
+						Ball_Y_Motion_in=Ball_Y_Step;
+					end
+		    		
+		    		
 				default: ;
 			endcase
 
