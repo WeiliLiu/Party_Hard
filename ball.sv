@@ -129,7 +129,7 @@ module  ball ( input         Clk,                // 50 MHz clock
 					end
 				16'h1A07: //w&d (up&right)
 					begin
-						Ball_Y_Motion_in=0;
+						Ball_Y_Motion_in=(~(Ball_Y_Step)+1'b1);
 						Ball_X_Motion_in=Ball_X_Step;
 					end
 		    
