@@ -11,9 +11,9 @@ module  personB ( input         Clk,                // 50 MHz clock
 					
               );
     
-	parameter [9:0] personB_X_Center=390;  // Center position on the X axis
-	parameter [9:0] personB_Y_Center=106;  // Center position on the Y axis
-    parameter [9:0] personB_X_Min=100;       // Leftmost point on the X axis
+	parameter [9:0] personB_X_Center=325;  // Center position on the X axis
+	parameter [9:0] personB_Y_Center=173;  // Center position on the Y axis
+	parameter [9:0] personB_X_Min=325;       // Leftmost point on the X axis
 	parameter [9:0] personB_X_Max=445;     // Rightmost point on the X axis
 	parameter [9:0] personB_Y_Min=107;       // Topmost point on the Y axis
 	parameter [9:0] personB_Y_Max_2=333;
@@ -94,20 +94,20 @@ module  personB ( input         Clk,                // 50 MHz clock
 				Reset:
 				begin
 					personB_X_Motion_in = 1'b0;
-					personB_Y_Motion_in = 1'b1;
+					personB_Y_Motion_in = 1'b0;
 					personB_X_Pos_in = personB_X_Center;
 					personB_Y_Pos_in = personB_Y_Center;
 				end
 				wander:
 				begin	
 					
-					if(personB_X_Pos == personB_X_Max && personB_Y_Pos < personB_Y_Max )  // Ball is at the bottom edge, BOUNCE!
+					if(personB_X_Pos >= personB_X_Max && personB_Y_Pos > personB_Y_Min )  // Ball is at the bottom edge, BOUNCE!
 					begin
 						personB_Y_Motion_in =  (~(personB_Y_Step) + 1'b1);
 						personB_X_Motion_in = 0;
 						personB_X_Pos_in = personB_X_Max;
 					end
-					else if( personB_Y_Pos == personB_Y_Max && personB_X_Pos > personB_X_Min )
+					else if( personB_Y_Pos >= personB_Y_Max && personB_X_Pos < personB_X_Max )
 					begin
 						personB_X_Motion_in = personB_X_Step;  // 2's complement. 
 						personB_Y_Motion_in = 0;
