@@ -387,8 +387,8 @@ module  color_mapper ( input Clk,          // Whether current pixel belongs to b
 			begin
 				is_personA_killed = 1'b1;
 			end
-			if(DrawX >= personA_X - 10'd30 && DrawX <= personA_X + 10'd30 && DrawY >= personA_Y - 10'd5 && DrawY<=personA_Y+10'd5
-			&& personA_dead_RGB != 24'h000000 && personA_killed == 1'b0 && collected == 0 
+			if(DrawX >= personA_X - 10'd10 && DrawX <= personA_X + 10'd10 && DrawY >= personA_Y - 10'd30 && DrawY<=personA_Y+10'd30
+			&& personA_discover_RGB != 24'h000000 && personA_killed == 1'b0 && collected == 0 
 			&& game_start == 0 && lost == 0 && police_needed_A == 1'b1)
 			begin
 				is_personA_discover = 1'b1;
