@@ -15,6 +15,7 @@ module  personB ( input         Clk,                // 50 MHz clock
 	parameter [9:0] personB_Y_Center=173;  // Center position on the Y axis
 	parameter [9:0] personB_X_Min=325;       // Leftmost point on the X axis
 	parameter [9:0] personB_X_Max=445;     // Rightmost point on the X axis
+	parameter [9:0] personB_X_Max_2=450;
 	parameter [9:0] personB_Y_Min=107;       // Topmost point on the Y axis
 	parameter [9:0] personB_Y_Max_2=333;
 	parameter [9:0] personB_Y_Max=273;     // Bottommost point on the Y axis
@@ -116,20 +117,33 @@ module  personB ( input         Clk,                // 50 MHz clock
 					else if(personB_X_Pos == personB_X_Min && personB_Y_Pos > personB_Y_Min)
 					begin
 						personB_X_Motion_in = 0;
-						personB_Y_Motion_in = (~(personB_Y_Step) + 1'b1);
+						personB_Y_Motion_in = personB_Y_Step;
 						personB_X_Pos_in = personB_X_Min;
 					end
 					else if(personB_Y_Pos <= personB_Y_Min && personB_X_Pos == personB_X_Max)
 					begin
-						personB_X_Motion_in = 0;
-						personB_Y_Motion_in = personB_Y_Step;
+						personB_X_Motion_in = personB_X_Step;
+						personB_Y_Motion_in = 0;
 						personB_X_Pos_in = personB_X_Max;
 					end
-					else if(personB_Y_Pos >= personB_Y_Max_2 && personB_X_Pos == personB_X_Max)
+					else if(personB_Y_Pos == personB_Y_Min && personB_X_Pos <personB_X_Max_2)
+					begin
+						personB_X_Motion_in = personB_X_Step;
+						personB_Y_Motion_in = 0;
+						personB_Y_Pos_in = personB_Y_Min;
+					end
+					else if(personB_Y_Pos < personB_Y_Max_2 && personB_X_Pos ==personB_X_Max_2)
+					begin
+						personB_X_Motion_in = 0;
+						personB_Y_Motion_in = personB_Y_Max;
+						personB_X_Pos_in = personB_X_Max_2;
+					end
+					
+					else if(personB_Y_Pos == personB_Y_Max_2 && personB_X_Pos > personB_X_Min)
 					begin
 						personB_X_Motion_in = 0;
 						personB_Y_Motion_in = (~(personB_Y_Step) + 1'b1);
-						personB_X_Pos_in = personB_X_Min;
+						personB_Y_Pos_in = personB_X_Max_2;
 					end
 				end
 				call_police1:
