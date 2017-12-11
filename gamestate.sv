@@ -1,4 +1,4 @@
-module gamestate(input Reset, Clk, gameover_caught, scoring_A, scoring_B, scoring_C,
+module gamestate(input Reset, Clk, gameover_caught, scoring_A, scoring_B, scoring_C,leftButton,
 					input [7:0] key,
 					 input[9:0] cursorX,cursorY,
 					  output ready,
