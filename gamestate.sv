@@ -1,5 +1,6 @@
 module gamestate(input Reset, Clk, gameover_caught, scoring_A, scoring_B, scoring_C,
-						input [7:0] key,
+					input [7:0] key,
+					 input[9:0] cursorX,cursorY,
 					  output ready,
 					  output lost,
 					  output [10:0] totalscore,
@@ -13,7 +14,25 @@ logic [10:0] score_total_in;
 logic [3:0] hex_score, hex_score2;
 logic score_added_A, score_added_B, score_added_C;
 logic score_added_A_in, score_added_B_in, score_added_C_in;
+logic clicked_on_something;
+	
+parameter [9:0] xrange=10'd40;
+parameter [9:0] yrange=10'd40; //assign it to something!
+parameter [9:0] object_X=10'd320;
+parameter [9:0] object_Y=10'd320;
 
+always_comb
+begin
+   clicked_on_something = 1'b0;
+   xrange
+   if((leftButton) &&
+      (cursorX >= object_X-xrange
+    && cursorX < object_X+xrange &&
+       cursorY >= object_Y-yrange &&
+       cursorY < object_Y+yrange
+      ))
+     clicked_on_something = 1'b1;
+end
 
   always_ff @ (posedge Reset or posedge Clk  )
     begin : Assign_Next_State
@@ -44,8 +63,8 @@ logic score_added_A_in, score_added_B_in, score_added_C_in;
 	 
         unique case (State)
             Start : 
-              if (key == 8'h28)//press enter to play
-						Next_state = set_game;
+		    if (clicked_on_something)//press enter to play
+					Next_state = set_game;
 				set_game:
 					Next_state = Playing;
             Playing : 
