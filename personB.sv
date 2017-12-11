@@ -4,7 +4,7 @@ module  personB ( input         Clk,                // 50 MHz clock
                              frame_clk,
 									  reset_corpse,
 									  complete,
-						   input[9:0] death_X, death_Y,
+						   input[9:0] death_X, death_Y, ballX, ballY,
             // Whether current pixel belongs to ball or backgroun
 					output[9:0]  personB_X, personB_Y,
 					output logic police_needed_B,witness_B
@@ -29,7 +29,7 @@ module  personB ( input         Clk,                // 50 MHz clock
 	 assign personB_X = personB_X_Pos;
 	 assign personB_Y = personB_Y_Pos;
 	 
-	 enum logic [2:0] {reset, wander, call_police1, dead, corpse_removed, call_police2d} State, Next_state;
+	 enum logic [2:0] {reset, wander, call_police1, dead, corpse_removed, call_police2} State, Next_state;
 	 
 	 always_ff @ (posedge Clk)
 	 begin: Assign_Next_State
@@ -88,6 +88,7 @@ module  personB ( input         Clk,                // 50 MHz clock
          personB_Y_Pos_in = personB_Y_Pos + personB_Y_Motion;
 			personB_X_Motion_in = personB_X_Motion;
 		   personB_Y_Motion_in = personB_Y_Motion;
+			witness_B = 1'b0;
 			
 			case(State)
 				Reset:
