@@ -2,9 +2,10 @@ module  police ( input         Clk,                // 50 MHz clock
                              Reset,              // Active-high reset signal
 									  police_out,
                              frame_clk,          // The clock indicating a new frame (~60Hz)
-					input [9:0]  death_X, death_Y,
+									  chase,
+					input [9:0]  death_X, death_Y,ballX, ballY,
 					output[9:0]  police_X, police_Y,
-					output logic police_back
+					output logic police_back, gameover_caught
               );
 
     parameter [9:0] police_X_Step=1;      // Step size on the X axis
@@ -47,7 +48,7 @@ module  police ( input         Clk,                // 50 MHz clock
 
     //Start of the police_car FSM
 
-	 enum logic [2:0] {Wait, start, collect, back} State, Next_state;
+	 enum logic [2:0] {Wait, start, collect, chase_state, back, caught} State, Next_state;
 
 	 always_ff @ (posedge Clk)
 	 begin: Assign_Next_State
@@ -63,8 +64,10 @@ module  police ( input         Clk,                // 50 MHz clock
 
 			unique case(State)
 			Wait:
-				if(police_out == 1'b1)
+				if(police_out == 1'b1 && chase == 0)
 					Next_state = start;
+				else if(police_out == 1'b1 && chase == 1)
+					Next_state = chase_state;
 				else
 					Next_state = Wait;
 			start:
@@ -72,6 +75,14 @@ module  police ( input         Clk,                // 50 MHz clock
 					Next_state = collect;
 				else
 					Next_state = start;
+			chase_state:
+				if(police_X <= ballX + 10'd32 && police_Y <= ballY + 10'd15
+			&& police_Y >= ballY - 10'd15 && police_X >= ballX - 10'd32)
+					Next_state = caught;
+				else
+					Next_state = chase_state;
+			caught:
+				Next_state = caught;
 			collect:
 				if(police_X_Pos == 10'd320 && police_Y_Pos == 10'd450)
 					Next_state = back;
@@ -87,6 +98,7 @@ module  police ( input         Clk,                // 50 MHz clock
 	 always_comb
 	 begin
 			police_back = 1'b0;
+			gameover_caught = 1'b0;
 			police_X_Motion_in = police_X_Motion;
 			police_Y_Motion_in = police_Y_Motion;
 			police_X_Pos_in = police_X_Pos + police_X_Motion;
@@ -119,6 +131,37 @@ module  police ( input         Clk,                // 50 MHz clock
 						police_Y_Motion_in = 1'b0;
 						police_Y_Pos_in = police_Y_Pos;
 					end
+				end
+				chase_state:
+				begin
+					if(police_X_Pos < ballX)
+					begin
+						police_X_Motion_in = 1'b1;
+					end
+					if(police_X_Pos > ballX)
+					begin
+						police_X_Motion_in = (~(police_X_Step) + 1'b1);
+					end
+					if(police_X_Pos == ballX)
+					begin
+						police_X_Motion_in = 1'b0;
+						police_X_Pos_in = police_X_Pos;
+					end
+					if(police_Y_Pos < ballY)
+						police_Y_Motion_in = 1'b1;
+					if(police_Y_Pos > ballY)
+						police_Y_Motion_in = (~(police_Y_Step) + 1'b1);
+					if(police_Y_Pos == ballY)
+					begin
+						police_Y_Motion_in = 1'b0;
+						police_Y_Pos_in = police_Y_Pos;
+					end
+				end
+				caught:
+				begin
+						police_Y_Motion_in = 1'b0;
+						police_X_Motion_in = 1'b0;
+						gameover_caught = 1'b1;
 				end
 				collect:
 				begin
