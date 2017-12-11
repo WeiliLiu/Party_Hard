@@ -4,10 +4,11 @@ module personA ( input         Clk,                // 50 MHz clock
                              frame_clk,
 									  reset_corpse,
 									  complete,
-						   input[9:0] death_X, death_Y,
+									  attack_out, 
+						   input[9:0] death_X, death_Y, ballX, ballY,
             // Whether current pixel belongs to ball or backgroun
 					output[9:0]  personA_X, personA_Y,
-					output logic police_needed_A
+					output logic police_needed_A, witness_A
 					
               );
     
@@ -28,7 +29,7 @@ module personA ( input         Clk,                // 50 MHz clock
 	 assign personA_X = personA_X_Pos;
 	 assign personA_Y = personA_Y_Pos;
 	 
-	 enum logic [2:0] {reset, wander, call_police, dead, corpse_removed} State, Next_state;
+	 enum logic [2:0] {reset, wander, call_police1, dead, corpse_removed, call_police2} State, Next_state;
 	 
 	 always_ff @ (posedge Clk)
 	 begin: Assign_Next_State
@@ -50,14 +51,25 @@ module personA ( input         Clk,                // 50 MHz clock
 					Next_state = dead;
 				else if(death_X <= personA_X_Pos + 10'd32 && death_Y <= personA_Y_Pos + 10'd15
 			&& death_Y >= personA_Y_Pos - 10'd15 && death_X >= personA_X_Pos - 10'd32)
-					Next_state = call_police;
+				begin
+					if(ballX <= death_X + 10'd40 && ballY <= death_Y + 10'd40
+			&& ballY >= death_Y - 10'd40 && ballX >= death_X - 10'd40)
+						Next_state = call_police2;
+					else
+						Next_state = call_police1;
+				end
 				else
 					Next_state = wander;
-			call_police:
+			call_police1:
 				if(complete == 1'b1)
 					Next_state = wander;
 				else
-					Next_state = call_police;
+					Next_state = call_police1;
+			call_police2:
+				if(complete == 1'b1)
+					Next_state = wander;
+				else
+					Next_state = call_police2;
 			dead:
 				if(reset_corpse == 1'b1)
 					Next_state = corpse_removed;
@@ -72,6 +84,7 @@ module personA ( input         Clk,                // 50 MHz clock
 	 always_comb
 	 begin
 			police_needed_A = 1'b0;
+			witness_A = 1'b0;
 			personA_X_Pos_in = personA_X_Pos + personA_X_Motion;
          personA_Y_Pos_in = personA_Y_Pos + personA_Y_Motion;
 			personA_X_Motion_in = personA_X_Motion;
@@ -112,9 +125,16 @@ module personA ( input         Clk,                // 50 MHz clock
 						personA_Y_Pos_in = personA_Y_Min;
 					end
 				end
-				call_police:
+				call_police1:
 				begin
 					police_needed_A = 1'b1;
+					personA_X_Motion_in = 1'b0;
+					personA_Y_Motion_in = 1'b0;
+				end
+				call_police2:
+				begin
+					police_needed_A = 1'b1;
+					witness_A = 1'b1;
 					personA_X_Motion_in = 1'b0;
 					personA_Y_Motion_in = 1'b0;
 				end
