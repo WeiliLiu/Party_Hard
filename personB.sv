@@ -7,7 +7,7 @@ module  personB ( input         Clk,                // 50 MHz clock
 						   input[9:0] death_X, death_Y,
             // Whether current pixel belongs to ball or backgroun
 					output[9:0]  personB_X, personB_Y,
-					output logic police_needed_B
+					output logic police_needed_B,witness_B
 					
               );
     
@@ -29,7 +29,7 @@ module  personB ( input         Clk,                // 50 MHz clock
 	 assign personB_X = personB_X_Pos;
 	 assign personB_Y = personB_Y_Pos;
 	 
-	 enum logic [2:0] {reset, wander, call_police, dead, corpse_removed} State, Next_state;
+	 enum logic [2:0] {reset, wander, call_police1, dead, corpse_removed, call_police2d} State, Next_state;
 	 
 	 always_ff @ (posedge Clk)
 	 begin: Assign_Next_State
@@ -51,14 +51,25 @@ module  personB ( input         Clk,                // 50 MHz clock
 					Next_state = dead;
 				else if(death_X <= personB_X_Pos + 10'd32 && death_Y <= personB_Y_Pos + 10'd15
 			&& death_Y >= personB_Y_Pos - 10'd15 && death_X >= personB_X_Pos - 10'd32)
-					Next_state = call_police;
+				begin
+					if(ballX <= death_X + 10'd40 && ballY <= death_Y + 10'd40
+			&& ballY >= death_Y - 10'd40 && ballX >= death_X - 10'd40)
+						Next_state = call_police2;
+					else
+						Next_state = call_police1;
+				end
 				else
 					Next_state = wander;
-			call_police:
+			call_police1:
 				if(complete == 1'b1)
 					Next_state = wander;
 				else
-					Next_state = call_police;
+					Next_state = call_police1;
+			call_police2:
+				if(complete == 1'b1)
+					Next_state = wander;
+				else
+					Next_state = call_police2;
 			dead:
 				if(reset_corpse == 1'b1)
 					Next_state = corpse_removed;
@@ -120,12 +131,20 @@ module  personB ( input         Clk,                // 50 MHz clock
 						personB_X_Pos_in = personB_X_Min;
 					end
 				end
-				call_police:
+				call_police1:
 				begin
 					police_needed_B = 1'b1;
 					personB_X_Motion_in = 1'b0;
 					personB_Y_Motion_in = 1'b0;
 				end
+				call_police2:
+				begin
+					police_needed_B = 1'b1;
+					witness_B = 1'b1;
+					personB_X_Motion_in = 1'b0;
+					personB_Y_Motion_in = 1'b0;
+				end
+
 				dead:
 				begin
 					personB_X_Motion_in = 1'b0;
