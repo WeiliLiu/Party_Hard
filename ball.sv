@@ -117,7 +117,7 @@ module  ball ( input         Clk,                // 50 MHz clock
 						Ball_Y_Motion_in=0;
 						
 					end
-				attack_on: //e(attack)
+				e_on: //e(attack)
 					begin
 						Ball_X_Motion_in = 0;
 						Ball_Y_Motion_in = 0;
