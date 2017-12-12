@@ -23,5 +23,30 @@ assign d_on = (keycode[31:24] == 8'h07 |
                keycode[23:16] == 8'h07 |
                keycode[15: 8] == 8'h07 |
                keycode[ 7: 0] == 8'h07); 
+ assign e_on = (keycode[31:24] == 8'h1A |
+               keycode[23:16] == 8'h1A |
+               keycode[15: 8] == 8'h1A |
+               keycode[ 7: 0] == 8'h1A);
+ assign up_on = (keycode[31:24] == 8'h1A |
+               keycode[23:16] == 8'h1A |
+               keycode[15: 8] == 8'h1A |
+               keycode[ 7: 0] == 8'h1A);
+ assign left_on = (keycode[31:24] == 8'h1A |
+               keycode[23:16] == 8'h1A |
+               keycode[15: 8] == 8'h1A |
+               keycode[ 7: 0] == 8'h1A);
+ assign right_on = (keycode[31:24] == 8'h1A |
+               keycode[23:16] == 8'h1A |
+               keycode[15: 8] == 8'h1A |
+               keycode[ 7: 0] == 8'h1A);
+ assign down_on = (keycode[31:24] == 8'h1A |
+               keycode[23:16] == 8'h1A |
+               keycode[15: 8] == 8'h1A |
+               keycode[ 7: 0] == 8'h1A);
+  assign space_on = (keycode[31:24] == 8'h1A |
+               keycode[23:16] == 8'h1A |
+               keycode[15: 8] == 8'h1A |
+               keycode[ 7: 0] == 8'h1A);
+               
                
 endmodule
