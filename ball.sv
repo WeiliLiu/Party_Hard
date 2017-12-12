@@ -17,7 +17,8 @@
 module  ball ( input         Clk,                // 50 MHz clock
                              Reset,              // Active-high reset signal
                              frame_clk,          // The clock indicating a new frame (~60Hz)
-					input [15:0]  keycode,
+		input w_on,a_on,s_on,d_on,block_out,
+	      input[9:0] player2X,player2Y,
                input [9:0]   DrawX, DrawY,       // Current pixel coordinates
              // Whether current pixel belongs to ball or background
 					output logic [9:0]ballX, ballY,
@@ -37,7 +38,7 @@ module  ball ( input         Clk,                // 50 MHz clock
 
     logic [9:0] Ball_X_Pos, Ball_X_Motion, Ball_Y_Pos, Ball_Y_Motion;
     logic [9:0] Ball_X_Pos_in, Ball_X_Motion_in, Ball_Y_Pos_in, Ball_Y_Motion_in;
-	 logic left, left_in, attack, attack_in;
+	 logic left, left_in, attack, attack_in,key;
 
 
     /* Since the multiplicants are required to be signed, we have to first cast them
@@ -61,7 +62,8 @@ module  ball ( input         Clk,                // 50 MHz clock
     // Update ball position and motion
     always_ff @ (posedge Clk)
     begin
-        if (Reset)
+	    if (Reset || (Ball_X_Pos <= player2X + 10'd40) &&  (Ball_Y_Pos <= player2Y + 10'd40)
+		&&  (Ball_Y_Pos >= player2Y - 10'd40) && (Ball_X_Pos >= player2X- 10'd40))
         begin
             Ball_X_Pos <= Ball_X_Center;
             Ball_Y_Pos <= Ball_Y_Center;
@@ -90,83 +92,39 @@ module  ball ( input         Clk,                // 50 MHz clock
 		  attack_in = 10'd0;
 
 
-	    unique case(keycode[15:0])
+	    unique case(key)
 
-				16'h001A: //w (up)
+				w_on: //w (up)
 					begin
 						Ball_X_Motion_in=0;
 						Ball_Y_Motion_in=(~(Ball_Y_Step)+1'b1);
 					end
-				16'h0007: //d(right)
+				d_on: //d(right)
 					begin
 						Ball_Y_Motion_in=0;
 						Ball_X_Motion_in=Ball_X_Step;
 					
 
 					end
-				16'h0016: //s(down)
+				s_on: //s(down)
 					begin
 						Ball_X_Motion_in=0;
 						Ball_Y_Motion_in=Ball_Y_Step;
 					end
-				16'h0004: //a(left)
+				a_on: //a(left)
 					begin
 						Ball_X_Motion_in=(~(Ball_X_Step)+1'b1);
 						Ball_Y_Motion_in=0;
 						
 					end
-				16'h0008: //e(attack)
+				attack_on: //e(attack)
 					begin
 						Ball_X_Motion_in = 0;
 						Ball_Y_Motion_in = 0;
 						attack_in = 1;
 					end
 		    
-		   		 16'h071A: //w&d (up&right)
-					begin
-						Ball_X_Motion_in=Ball_X_Step;
-						Ball_Y_Motion_in=(~(Ball_Y_Step)+1'b1);
-					end
-				16'h1A07: //w&d (up&right)
-					begin
-						Ball_Y_Motion_in=(~(Ball_Y_Step)+1'b1);
-						Ball_X_Motion_in=Ball_X_Step;
-					end
-		    
-		    		16'h041A: //w&a (up& left)
-			    		begin
-						Ball_Y_Motion_in=(~(Ball_Y_Step)+1'b1);
-						Ball_X_Motion_in=(~(Ball_X_Step)+1'b1);
-					end
-		    		16'h1A04: //w&a (up& left)
-			    		begin
-						Ball_Y_Motion_in=(~(Ball_Y_Step)+1'b1);
-						Ball_X_Motion_in=(~(Ball_X_Step)+1'b1);
-					end
-		    		16'h0716: //s&d(down&right)
-					begin
-						Ball_X_Motion_in=Ball_X_Step;
-						Ball_Y_Motion_in=Ball_Y_Step;
-					end
-		    
-		    		16'h1607: //s&d(down&right)
-					begin
-						Ball_X_Motion_in=Ball_X_Step;
-						Ball_Y_Motion_in=Ball_Y_Step;
-					end
-		    
-		    		16'h0416: //s&d(down&left)
-					begin
-						Ball_X_Motion_in=(~(Ball_X_Step)+1'b1);
-						Ball_Y_Motion_in=Ball_Y_Step;
-					end
-		    
-			     	16'h1604: //s&d(down&left)
-					begin
-						Ball_X_Motion_in=(~(Ball_X_Step)+1'b1);
-						Ball_Y_Motion_in=Ball_Y_Step;
-					end
-		    		
+		 
 		    		
 				default: ;
 			endcase
