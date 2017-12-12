@@ -103,7 +103,7 @@ module  ball ( input         Clk,                // 50 MHz clock
 					begin
 						Ball_Y_Motion_in=0;
 						Ball_X_Motion_in=Ball_X_Step;
-					
+
 
 					end
 				s_on: //s(down)
@@ -115,7 +115,7 @@ module  ball ( input         Clk,                // 50 MHz clock
 					begin
 						Ball_X_Motion_in=(~(Ball_X_Step)+1'b1);
 						Ball_Y_Motion_in=0;
-						
+
 					end
 				e_on: //e(attack)
 					begin
@@ -123,9 +123,9 @@ module  ball ( input         Clk,                // 50 MHz clock
 						Ball_Y_Motion_in = 0;
 						attack_in = 1;
 					end
-		    
-		 
-		    		
+
+
+
 				default: ;
 			endcase
 
@@ -238,7 +238,7 @@ module  ball ( input         Clk,                // 50 MHz clock
 				Ball_Y_Motion_in = 0;
 				end
 	    else if(Ball_X_Pos-14 == 540 && ((Ball_Y_Pos-21<=286 && Ball_Y_Pos-21>=64) || (Ball_Y_Pos+21<=286 && Ball_Y_Pos+21>=64)
-			|| (Ball_Y_Pos<=286 && Ball_Y_Pos>=66)))
+			|| (Ball_Y_Pos<=286 && Ball_Y_Pos>=64)))
 				begin
 				Ball_X_Motion_in = Ball_X_Step;
 				Ball_Y_Motion_in = 0;
@@ -248,7 +248,7 @@ module  ball ( input         Clk,                // 50 MHz clock
 				Ball_X_Motion_in =0;
 				Ball_Y_Motion_in =Ball_Y_Step;
 				end
-	    else if(Ball_Y_Pos+21 ==66 && Ball_X_Pos-14<=540 && Ball_X_Pos+14>=532)
+	    else if(Ball_Y_Pos+21 ==64 && Ball_X_Pos-14<=540 && Ball_X_Pos+14>=532)
 				begin
 				Ball_X_Motion_in = 0;
 				Ball_Y_Motion_in = (~(Ball_Y_Step) + 1'b1);
@@ -264,7 +264,7 @@ module  ball ( input         Clk,                // 50 MHz clock
   				Ball_X_Motion_in = (~(Ball_X_Step) + 1'b1);
   				Ball_Y_Motion_in = 0;
   				end
-  	    else if(Ball_X_Pos-14 == 186 && ((Ball_Y_Pos-21<=250 && Ball_Y_Pos-21>=66) || (Ball_Y_Pos+21<=108 && Ball_Y_Pos+21>=102)
+  	    else if(Ball_X_Pos-14 == 186 && ((Ball_Y_Pos-21<=108 && Ball_Y_Pos-21>=102) || (Ball_Y_Pos+21<=108 && Ball_Y_Pos+21>=102)
   			|| (Ball_Y_Pos<=108 && Ball_Y_Pos>=102)))
   				begin
   				Ball_X_Motion_in = Ball_X_Step;
@@ -290,8 +290,8 @@ module  ball ( input         Clk,                // 50 MHz clock
     				Ball_X_Motion_in = (~(Ball_X_Step) + 1'b1);
     				Ball_Y_Motion_in = 0;
     				end
-    	    else if(Ball_X_Pos-14 == 60 && ((Ball_Y_Pos-21<=250 && Ball_Y_Pos-21>=102) || (Ball_Y_Pos+21<=250 && Ball_Y_Pos+21>=66)
-    			|| (Ball_Y_Pos<=250 && Ball_Y_Pos>=66)))
+    	    else if(Ball_X_Pos-14 == 60 && ((Ball_Y_Pos-21<=250 && Ball_Y_Pos-21>=102) || (Ball_Y_Pos+21<=250 && Ball_Y_Pos+21>=102)
+    			|| (Ball_Y_Pos<=250 && Ball_Y_Pos>=102)))
     				begin
     				Ball_X_Motion_in = Ball_X_Step;
     				Ball_Y_Motion_in = 0;
@@ -308,13 +308,13 @@ module  ball ( input         Clk,                // 50 MHz clock
     				end
 
 //
-            else if(Ball_X_Pos+14 == 55 && ((Ball_Y_Pos-21<=175 && Ball_Y_Pos-21>=179) || (Ball_Y_Pos+21<=175 && Ball_Y_Pos+21>=175)
+            else if(Ball_X_Pos+14 == 55 && ((Ball_Y_Pos-21<=179 && Ball_Y_Pos-21>=175) || (Ball_Y_Pos+21<=179 && Ball_Y_Pos+21>=175)
       			|| (Ball_Y_Pos<=179 && Ball_Y_Pos>=175)))
       				begin
       				Ball_X_Motion_in = (~(Ball_X_Step) + 1'b1);
       				Ball_Y_Motion_in = 0;
       				end
-      	    else if(Ball_X_Pos-14 == 100 && ((Ball_Y_Pos-21<=175 && Ball_Y_Pos-21>=179) || (Ball_Y_Pos+21<=175 && Ball_Y_Pos+21>=179)
+      	    else if(Ball_X_Pos-14 == 100 && ((Ball_Y_Pos-21<=179 && Ball_Y_Pos-21>=175) || (Ball_Y_Pos+21<=179 && Ball_Y_Pos+21>=175)
       			|| (Ball_Y_Pos<=179 && Ball_Y_Pos>=175)))
       				begin
       				Ball_X_Motion_in = Ball_X_Step;
@@ -578,7 +578,7 @@ module  ball ( input         Clk,                // 50 MHz clock
                                   Ball_X_Motion_in = (~(Ball_X_Step) + 1'b1);
                                   Ball_Y_Motion_in = 0;
                                   end
-                                else if(Ball_X_Pos-14 == 60 && ((Ball_Y_Pos-21<=191 && Ball_Y_Pos-21>=280) || (Ball_Y_Pos+21<=191 && Ball_Y_Pos+21>=280)
+                                else if(Ball_X_Pos-14 == 60 && ((Ball_Y_Pos-21<=191 && Ball_Y_Pos-21>=183) || (Ball_Y_Pos+21<=191 && Ball_Y_Pos+21>=183)
                                 || (Ball_Y_Pos<=191 && Ball_Y_Pos>=183)))
                                   begin
                                   Ball_X_Motion_in = Ball_X_Step;
@@ -610,12 +610,12 @@ module  ball ( input         Clk,                // 50 MHz clock
                                 Ball_X_Motion_in = Ball_X_Step;
                                 Ball_Y_Motion_in = 0;
                                 end
-                                else if (Ball_Y_Pos-21 == 191 && Ball_X_Pos-14<=350 && Ball_X_Pos+14>=280)
+                                else if (Ball_Y_Pos-21 == 350 && Ball_X_Pos-14<=191 && Ball_X_Pos+14>=185)
                                 begin
                                 Ball_X_Motion_in =0;
                                 Ball_Y_Motion_in =Ball_Y_Step;
                                 end
-                                else if(Ball_Y_Pos+21 ==183 && Ball_X_Pos-14<=350 && Ball_X_Pos+14>=280)
+                                else if(Ball_Y_Pos+21 ==280 && Ball_X_Pos-14<=191 && Ball_X_Pos+14>=185)
                                 begin
                                 Ball_X_Motion_in = 0;
                                 Ball_Y_Motion_in = (~(Ball_Y_Step) + 1'b1);
@@ -654,7 +654,7 @@ Ball_X_Motion_in = (~(Ball_X_Step) + 1'b1);
 Ball_Y_Motion_in = 0;
 end
 else if(Ball_X_Pos-14 == 255 && ((Ball_Y_Pos-21<=336 && Ball_Y_Pos-21>=329) || (Ball_Y_Pos+21<=336 && Ball_Y_Pos+21>=329)
-|| (Ball_Y_Pos<=350 && Ball_Y_Pos>=345)))
+|| (Ball_Y_Pos<=336 && Ball_Y_Pos>=329)))
 begin
 Ball_X_Motion_in = Ball_X_Step;
 Ball_Y_Motion_in = 0;
@@ -673,7 +673,7 @@ end
 
 //
 else if(Ball_X_Pos+14 == 385 && ((Ball_Y_Pos-21<=334 && Ball_Y_Pos-21>=280) || (Ball_Y_Pos+21<=334 && Ball_Y_Pos+21>=280)
-|| (Ball_Y_Pos<=350 && Ball_Y_Pos>=345)))
+|| (Ball_Y_Pos<=334 && Ball_Y_Pos>=280)))
 begin
 Ball_X_Motion_in = (~(Ball_X_Step) + 1'b1);
 Ball_Y_Motion_in = 0;
@@ -751,7 +751,7 @@ begin
 Ball_X_Motion_in = (~(Ball_X_Step) + 1'b1);
 Ball_Y_Motion_in = 0;
 end
-else if(Ball_X_Pos-14 == 523 && ((Ball_Y_Pos-21<=350 && Ball_Y_Pos-21>=280) || (Ball_Y_Pos+21<=191 && Ball_Y_Pos+21>=280)
+else if(Ball_X_Pos-14 == 523 && ((Ball_Y_Pos-21<=350 && Ball_Y_Pos-21>=280) || (Ball_Y_Pos+21<=350 && Ball_Y_Pos+21>=280)
 || (Ball_Y_Pos<=350 && Ball_Y_Pos>=280)))
 begin
 Ball_X_Motion_in = Ball_X_Step;
