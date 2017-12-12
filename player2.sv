@@ -1,21 +1,4 @@
-Skip to content
-This repository
-Search
-Pull requests
-Issues
-Marketplace
-Explore
- @ychen381
- Sign out
- Watch 0
-  Star 0  Fork 0 WeiliLiu/Party_Hard
- Code  Issues 0  Pull requests 0  Projects 0  Wiki  Insights
-Branch: master Find file Copy pathParty_Hard/ball.sv
-4c32e37  a day ago
-@ychen381 ychen381 Update ball.sv
-2 contributors @WeiliLiu @ychen381
-RawBlameHistory     
-876 lines (767 sloc)  34 KB
+
 //-------------------------------------------------------------------------
 //    Ball.sv                                                            --
 //    Viral Mehta                                                        --
@@ -35,7 +18,7 @@ RawBlameHistory
 module  player2 ( input         Clk,                // 50 MHz clock
                              Reset,              // Active-high reset signal
                              frame_clk,          // The clock indicating a new frame (~60Hz)
-					    up_on,left_on,down_on,right_on,space_on,
+				up_on,left_on,down_on,right_on,space_on,
                input [9:0]   DrawX, DrawY,       // Current pixel coordinates
              // Whether current pixel belongs to ball or background
 					output logic [9:0]player2X, player2Y,
