@@ -35,15 +35,15 @@ RawBlameHistory
 module  player2 ( input         Clk,                // 50 MHz clock
                              Reset,              // Active-high reset signal
                              frame_clk,          // The clock indicating a new frame (~60Hz)
-					    up_on,left_on,down_on,right_on,
+					    up_on,left_on,down_on,right_on,space_on,
                input [9:0]   DrawX, DrawY,       // Current pixel coordinates
              // Whether current pixel belongs to ball or background
 					output logic [9:0]player2X, player2Y,
 					output left_out, block_out
               );
 
-    parameter [9:0] Ball_X_Center=320;  // Center position on the X axis
-    parameter [9:0] Ball_Y_Center=240;  // Center position on the Y axis
+	parameter [9:0] Ball_X_Center=300;  // Center position on the X axis
+	parameter [9:0] Ball_Y_Center=200;  // Center position on the Y axis
     parameter [9:0] Ball_X_Min=0;       // Leftmost point on the X axis
     parameter [9:0] Ball_X_Max=639;     // Rightmost point on the X axis
     parameter [9:0] Ball_Y_Min=0;       // Topmost point on the Y axis
@@ -133,7 +133,7 @@ module  player2 ( input         Clk,                // 50 MHz clock
 						Ball_Y_Motion_in=0;
 						
 					end
-				block_on: //space(bloack)
+				space_on: //space(bloack)
 					begin
 						Ball_X_Motion_in = 0;
 						Ball_Y_Motion_in = 0;
