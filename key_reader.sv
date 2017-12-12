@@ -1,6 +1,6 @@
 module keycode_reader(
 input logic[31:0] keycode,
-output logic w_on, a_on, s_on, d_on
+output logic w_on, a_on, s_on, d_on,e_on,space_on,up_on,down_on,right_on,left_on
 )
 ; 
  
