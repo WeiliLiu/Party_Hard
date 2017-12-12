@@ -520,8 +520,8 @@ int main(void)
 		IO_write(HPI_ADDR,0x051e); //the start address
 		keycode = IO_read(HPI_DATA);
 		
-		//IO_write(HPI_ADDR,0x0520); //the address of byte 2~3
-		//keycode += (IO_read(HPI_DATA) << 16);
+		IO_write(HPI_ADDR,0x0520); //the address of byte 2~3
+		keycode += (IO_read(HPI_DATA) << 16);
 		printf("\nfirst two keycode values are %04x\n",keycode);
 		IOWR(KEYCODE_BASE, 0, keycode & 0xff);
 
